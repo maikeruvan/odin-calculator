@@ -1,0 +1,110 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(248, 153, 89);
+}
+
+button,
+input {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.calculator {
+    background-color: #292929;
+    width: 320px;
+    margin: 2rem auto;
+    border-radius: 5px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.display {
+    font-size: 2rem;
+    height: 5.5rem;
+    padding-inline: 1rem;
+}
+
+.clearing {
+    display: flex;
+    column-gap: 0.5rem;
+}
+
+.clear-all {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.5rem;
+    background-color: rgb(247, 72, 29);
+    color: #fff;
+}
+
+.erase {
+    width: 4rem;
+    height: 4rem;
+    background-color: rgb(249, 152, 48);
+}
+
+.erase svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: #fff;
+}
+
+.equals {
+    flex: 1;
+    font-size: 1.5rem;
+    background-color: rgb(102, 249, 48);
+}
+
+.controls {
+    display: flex;
+}
+
+.numbers {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.numbers .row {
+    display: flex;
+    column-gap: 0.5rem;
+}
+
+.numbers button {
+    font-size: 1.5rem;
+    width: 4rem;
+    height: 4rem;
+    background-color: rgb(47, 211, 252);
+    color: #353535;
+}
+
+.operators {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.operators button {
+    color: #fff;
+    font-size: 1.5rem;
+    width: 4rem;
+    height: 4rem;
+    background-color: rgb(252, 47, 180);
+}
