@@ -10,15 +10,15 @@
 <body>
     <div class="calculator">
         <div class="screen-display">
-            <span class="previous-value"></span>
-            <span class="operator"></span>
-            <span class="current-value"></span>
+            <span class="previous-value" id="previous-value">89800</span>
+            <span class="operator" id="operator">+</span>
+            <span class="current-value" id="current-value">1241412</span>
         </div>
-        <div class="clear-controls">
-            <button type="button" class="all-clear">AC</button>
-            <button type="button" class="clear-entry">CE</button>
+        <div class="clear-controls" id="clear-controls">
+            <button type="button" class="all-clear" id="ac">AC</button>
+            <button type="button" class="clear-entry" id="ce">CE</button>
         </div>
-        <div class="number-keys">
+        <div class="number-keys" id="number-keys">
             <button type="button" id="7">7</button>
             <button type="button" id="8">8</button>
             <button type="button" id="9">9</button>
@@ -31,14 +31,14 @@
             <button type="button" id="0">0</button>
             <button type="button" id=".">.</button>
         </div>
-        <div class="operators">
+        <div class="operators" id="operators">
             <button type="button" id="*">&times;</button>
             <button type="button" id="/">&divide;</button>
             <button type="button" id="+">&plus;</button>
             <button type="button" id="-">&minus;</button>
         </div>
         <div class="equals">
-            <button type="button" class="equal-sign">&equals;</button>
+            <button type="button" class="equal-sign" id="equal-sign">&equals;</button>
         </div>
     </div>
 </body>
