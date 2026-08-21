@@ -38,6 +38,8 @@ button {
     font-size: 2rem;
     height: 5.5rem;
     padding-inline: 1rem;
+    background-color: rgb(246, 212, 212);
+    color: #000;
 }
 
 .clearing {
