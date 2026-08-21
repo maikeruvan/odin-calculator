@@ -7,106 +7,136 @@
 }
 
 body {
-    background-color: rgb(248, 153, 89);
-}
-
-button,
-input {
     font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    border: none;
-    outline: none;
-    border-radius: 5px;
+    background-color: rgb(113, 181, 249);
 }
 
 button {
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 5px;
     cursor: pointer;
+    border: none;
 }
 
 .calculator {
-    background-color: #292929;
-    width: 320px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    background-color: rgba(176, 6, 134, 0.742);
+    max-width: 350px;
     margin: 2rem auto;
     border-radius: 5px;
     padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
 }
 
-.display {
-    font-size: 2rem;
-    height: 5.5rem;
+.screen-display {
+    background-color: rgb(219, 219, 219);
+    height: 7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 0.5rem;
+    border-radius: 5px;
     padding-inline: 1rem;
-    background-color: rgb(246, 212, 212);
-    color: #000;
 }
 
-.clearing {
-    display: flex;
-    column-gap: 0.5rem;
+.screen-display .previous-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    align-self: flex-end;
 }
 
-.clear-all {
-    width: 4rem;
-    height: 4rem;
+.screen-display .operator {
+    font-weight: bold;
+    font-size: 1.3rem;
+    align-self: flex-end;
+}
+
+.screen-display .current-value {
     font-size: 1.5rem;
-    background-color: rgb(247, 72, 29);
+    font-weight: bold;
+    overflow-x: auto;
+}
+
+.clear-controls {
+    display: flex;
+    column-gap: 1rem;
+}
+
+.clear-controls .all-clear {
+    background-color: rgb(233, 64, 64);
     color: #fff;
-}
-
-.erase {
-    width: 4rem;
-    height: 4rem;
-    background-color: rgb(249, 152, 48);
-}
-
-.erase svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    fill: #fff;
-}
-
-.equals {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 1rem;
     flex: 1;
-    font-size: 1.5rem;
-    background-color: rgb(102, 249, 48);
 }
 
-.controls {
-    display: flex;
+.clear-controls .all-clear:hover {
+    background-color: rgb(226, 78, 78);
 }
 
-.numbers {
+.clear-controls .clear-entry {
+    padding: 1rem;
+    font-weight: bold;
+    background-color: rgb(196, 128, 2);
+    font-size: 1.2rem;
+    color: #fff;
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
 }
 
-.numbers .row {
-    display: flex;
-    column-gap: 0.5rem;
+.clear-controls .clear-entry:hover {
+    background-color: rgb(234, 173, 60);
 }
 
-.numbers button {
-    font-size: 1.5rem;
-    width: 4rem;
-    height: 4rem;
-    background-color: rgb(47, 211, 252);
-    color: #353535;
+.number-keys {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.number-keys button {
+    background-color: rgb(238, 180, 238);
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.number-keys button:hover {
+    background-color: rgb(223, 223, 223);
 }
 
 .operators {
     display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
+    flex-wrap: wrap;
+    column-gap: 0.5rem;
 }
 
 .operators button {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: rgb(27, 238, 125);
+}
+
+.operators button:hover {
+    background-color: rgb(94, 248, 166);
+}
+
+.equals {
+    display: flex;
+}
+
+.equals .equal-sign {
+    flex: 1;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: rgb(10, 52, 135);
     color: #fff;
-    font-size: 1.5rem;
-    width: 4rem;
-    height: 4rem;
-    background-color: rgb(252, 47, 180);
+}
+
+.equals .equal-sign:hover {
+    background-color: rgb(23, 63, 141);
 }
