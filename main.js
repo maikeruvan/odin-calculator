@@ -1,26 +1,33 @@
 // DOM
-const previousValueDisplay = document.getElementById('previous-value');
-const operatorDisplay = document.getElementById('operator');
-const currentValueDisplay = document.getElementById('current-value');
+const DOM = (() => {
+    const previousValue = document.getElementById('previous-value');
+    const currentValue = document.getElementById('current-value');
+    const operator = document.getElementById('operator');
+    const clearControl = document.getElementById('clear-controls');
+    const numberKey = document.getElementById('number-keys');
+    const operatorKey = document.getElementById('operators');
+    const equalKey = document.getElementById('equal-sign');
 
-const clearControlKeys = document.getElementById('clear-controls');
-const numberKeys = document.getElementById('number-keys');
-const operatorKeys = document.getElementById('operators');
+    return {
+         previousValue,
+         currentValue,
+         operator,
+         clearControl,
+         numberKey,
+         operatorKey,
+         equalKey
+    };
+})();
 
-const equalsKey = document.getElementById('equal-sign');
+const CALCULATOR = (() => {
+    const validNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+    const validOperators = ['+', '-', '*', '/'];
+    
+    const previousValue = DOM.previousValue.textContent;
+    const currentValue = DOM.currentValue.textContent;
+    const operator = DOM.operator.textContent;
 
-// State Variables
-
-// Because odin wants that after the result is displayed, entering a new number should clear the previous value
-let isEqualsUsed = false;
-
-const calculator = {
-    validNumbers: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'],
-    validOperators: ['+', '-', '*', '/'],
-    previousValue: previousValueDisplay.textContent,
-    currentValue: currentValueDisplay.textContent,
-    operator: operatorDisplay.textContent,
-    operate() {
+    function operate() {
         switch (this.operator) {
             case '+':
             return this.add();
@@ -34,22 +41,25 @@ const calculator = {
             case '*':
             return this.multiply();
         }
-    },
-    add() {
-        const prevNum = Number(this.previousValue);
+    }
+
+    function add() {
+        const prevNum = Number(this.previousValue); 
         const currNum = Number(this.currentValue);
         const diff = prevNum + currNum;
         
         return Math.round(diff * 100) / 100;
-    },
-    subtract() {
+    }
+
+    function subtract() {
         const prevNum = Number(this.previousValue);
         const currNum = Number(this.currentValue);
         const diff = prevNum - currNum;
 
         return Math.round(diff * 100) / 100;
-    },
-    divide() {
+    }
+
+    function divide() {
         if (Number(this.currentValue) === 0) {
             return Infinity;
         }
@@ -59,57 +69,89 @@ const calculator = {
         const diff = prevNum / currNum;
 
         return Math.round(diff * 100) / 100;
-    },
-    multiply() {
+    }
+
+    function multiply() {
         const prevNum = Number(this.previousValue);
         const currNum = Number(this.currentValue);
         const diff = prevNum * currNum;
 
         return Math.round(diff * 100) / 100;
-    },
-    clearEntry() {
+    }
+
+    // This method clears the currentValue
+    function clearEntry() {
         const currVal = String(this.currentValue);
         const prevVal = String(this.previousValue);
 
-        if (!currVal) {
-            if (!prevVal) {
-                return;
-            }
-
-            this.previousValue += this.operator;
-            this.currentValue = this.previousValue;
-            this.previousValue = '';
-            this.operator = '';
-
-            previousValueDisplay.textContent = this.previousValue;
-            currentValueDisplay.textContent = this.currentValue;
-            operatorDisplay.textContent = this.operator;
+        // If both are empty
+        if (!currVal && !prevVal) {
+            return;
         }
 
-        // Using "String here so clearEntry don't crash"
-        const stringToArray = currVal.split('');
-        stringToArray.pop();
+        // If there is no currentValue
+        // Then I am sure there is a previous value
+        if (!currVal) {
+            // merge
+            this.previousValue += this.operator;
+            // reassign to currentValue
+            this.currentValue = this.previousValue;
+            // Erase
+            this.previousValue = '';
+            this.operator = '';
+        }
 
-        const arrayToString = stringToArray.join('');
+        const arrayedCurrentValue = String(this.currentValue).split('');
 
-        this.currentValue = arrayToString;
-        currentValueDisplay.textContent = this.currentValue;
-    },
-    allClear() {
+        arrayedCurrentValue.pop();
+
+        const stringedCurrValArray = arrayedCurrentValue.join('');
+
+        this.currentValue = stringedCurrValArray;
+
+        DOM.previousValue.textContent = this.previousValue;
+        DOM.currentValue.textContent = this.currentValue;
+        DOM.operator.textContent = this.operator;
+    }
+
+    function allClear() {
         this.previousValue = '';
         this.currentValue = '';
         this.operator = '';
 
-        previousValueDisplay.textContent = this.previousValue;
-        currentValueDisplay.textContent = this.currentValue;
-        operatorDisplay.textContent = this.operator;
-    },
-    updateScreen() {
-        previousValueDisplay.textContent = this.previousValue;
-        operatorDisplay.textContent = this.operator;
-        currentValueDisplay.textContent = this.currentValue;
+        DOM.previousValue.textContent = this.previousValue;
+        DOM.currentValue.textContent = this.currentValue;
+        DOM.operator.textContent = this.operator;
     }
-};
+
+    function updateScreen() {
+        DOM.previousValue.textContent = this.previousValue;
+        DOM.operator.textContent = this.operator;
+        DOM.currentValue.textContent = this.currentValue;
+    }
+
+    return {
+        operate,
+        add,
+        subtract,
+        divide,
+        multiply,
+        allClear,
+        updateScreen,
+        clearEntry,
+        validNumbers,
+        currentValue,
+        validOperators,
+        operator,
+        previousValue
+    };
+})();
+
+let isEqualsUsed = false;
+
+console.log(`curr: ${CALCULATOR.currentValue}`);
+console.log(`opr: ${CALCULATOR.operator}`);
+console.log(`prev: ${CALCULATOR.previousValue}`);
 
 // Functions
 function handleNumbers(e) {
@@ -120,27 +162,36 @@ function handleNumbers(e) {
         numberKeyID = e.key;
     } else if (e.type === 'click') {
         numberKey = e.target.closest('button');
+
+        if (!numberKey) {
+            return;
+        }
+
         numberKeyID = numberKey.id;
     }
 
-    if (!numberKey) {
-        if (!numberKeyID) {
-            return;
-        }
-    }
 
-    if (isEqualsUsed) {
-        calculator.currentValue = '';
-    }
-
-    if (numberKeyID === '.' && calculator.currentValue.includes('.')) {
+    if (!numberKeyID) {
         return;
     }
 
-    calculator.currentValue += numberKeyID;
-    currentValueDisplay.textContent = calculator.currentValue;
-    
-    isEqualsUsed = false;
+    // Odin's requirements that when equals trigger the result
+    // The moment user enter a new number, it removes the old result
+    if (isEqualsUsed) {
+        CALCULATOR.currentValue = '';
+        isEqualsUsed = false;
+    }
+
+    if (numberKeyID === '.' && CALCULATOR.currentValue.includes('.')) {
+        return;
+    }
+
+    CALCULATOR.currentValue += numberKeyID;
+    DOM.currentValue.textContent = CALCULATOR.currentValue;
+
+    console.log(`curr: ${CALCULATOR.currentValue}`);
+    console.log(`opr: ${CALCULATOR.operator}`);
+    console.log(`prev: ${CALCULATOR.previousValue}`);
 }
 
 function handleOperators(e) {
@@ -151,51 +202,61 @@ function handleOperators(e) {
         operatorKeyID = e.key;
     } else if (e.type === 'click') {
         operatorKey = e.target.closest('button');
-        operatorKeyID = operatorKey.id;
-    }
 
-    if (!operatorKey) {
-        if (!operatorKeyID) {
+        if (!operatorKey) {
             return;
         }
+
+        operatorKeyID = operatorKey.dataset.symbol;
     }
 
-    if (!calculator.previousValue) {
-        if (!calculator.currentValue) {
-            return;
-        } else {
-            calculator.previousValue = calculator.currentValue;
-            calculator.operator = operatorKeyID;
-            calculator.currentValue = '';
-
-            calculator.updateScreen();
-        }
-    }
-
-    if (calculator.currentValue) {
-        const result = calculator.operate();
-
-        calculator.previousValue = result;
-        calculator.operator = operatorKeyID;
-        calculator.currentValue = '';
-
-        calculator.updateScreen();
-    }
-}
-
-function handleEquals() {
-    if (!calculator.previousValue || !calculator.currentValue || !calculator.operator) {
+    if (!operatorKeyID) {
         return;
     }
 
-    const result = calculator.operate();
+    if (!CALCULATOR.previousValue) {
+        if (!CALCULATOR.currentValue) {
+            return;
+        } else {
+            CALCULATOR.previousValue = CALCULATOR.currentValue;
+            CALCULATOR.operator = operatorKeyID;
+            CALCULATOR.currentValue = '';
 
-    calculator.previousValue = '';
-    calculator.operator = '';
-    calculator.currentValue = result;
+            CALCULATOR.updateScreen();
+            // Was suggested by AI to use return
+            // So only one operator is used
+            return;
+        }
+    }
+
+    if (CALCULATOR.currentValue) {
+        const result = CALCULATOR.operate();
+
+        CALCULATOR.previousValue = result;
+        CALCULATOR.operator = operatorKeyID;
+        CALCULATOR.currentValue = '';
+
+        CALCULATOR.updateScreen();
+    }
+
+    console.log(`curr: ${CALCULATOR.currentValue}`);
+    console.log(`opr: ${CALCULATOR.operator}`);
+    console.log(`prev: ${CALCULATOR.previousValue}`);
+}
+
+function handleEquals() {
+    if (!CALCULATOR.previousValue || !CALCULATOR.currentValue || !CALCULATOR.operator) {
+        return;
+    }
+
+    const result = CALCULATOR.operate();
+
+    CALCULATOR.previousValue = '';
+    CALCULATOR.operator = '';
+    CALCULATOR.currentValue = result;
     isEqualsUsed = true;
 
-    calculator.updateScreen();
+    CALCULATOR.updateScreen();
 }
 
 function handleClearControls(e) {
@@ -206,46 +267,50 @@ function handleClearControls(e) {
         clearControlID = e.key;
     } else if (e.type === 'click') {
         clearControl = e.target.closest('button');
+
+        if (!clearControl) {
+            return;
+        }
+
         clearControlID = clearControl.id;
     }
 
-    if (!clearControl) {
-        if (!clearControlID) {
-            return;
-        }
+    if (!clearControlID) {
+        return;
     }
 
     if (clearControlID === 'ac') {
-        calculator.allClear();
+        CALCULATOR.allClear();
     } else if (clearControlID === 'ce') {
-        calculator.clearEntry();
+        CALCULATOR.clearEntry();
     } else if (clearControlID === 'Backspace') {
-        calculator.clearEntry();
+        CALCULATOR.clearEntry();
     }
 }
 
 // Listeners
-clearControlKeys.addEventListener('click', handleClearControls);
+DOM.clearControl.addEventListener('click', handleClearControls);
 
-numberKeys.addEventListener('click', handleNumbers);
+DOM.numberKey.addEventListener('click', handleNumbers);
 
-operatorKeys.addEventListener('click', handleOperators);
+DOM.operatorKey.addEventListener('click', handleOperators);
 
-equalsKey.addEventListener('click', handleEquals);
+DOM.equalKey.addEventListener('click', handleEquals);
 
 window.addEventListener('keydown', (e) => {
     // Enter or Equals
     if (e.key === 'Enter' || e.key === '=') {
+        e.preventDefault();
         handleEquals();
     }
     
     // Operators
-    if (calculator.validOperators.includes(e.key)) {
+    if (CALCULATOR.validOperators.includes(e.key)) {
         handleOperators(e);
     }
 
     // Numbers
-    if (calculator.validNumbers.includes(e.key)) {
+    if (CALCULATOR.validNumbers.includes(e.key)) {
         handleNumbers(e);
     }
 
@@ -254,3 +319,19 @@ window.addEventListener('keydown', (e) => {
         handleClearControls(e);
     }
 });
+
+const test = (() => {
+    const a = 1;
+    const b = '';
+    const c = '1';
+
+    return {
+        a: a,
+        b: b,
+        c: c
+    };
+})();
+
+console.log(test);
+test.b = 'haha';
+console.log(test);
